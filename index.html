@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QuoteBoard</title>
+  <link rel="manifest" href="manifest.json">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500&display=swap" rel="stylesheet">
+  <meta name="theme-color" content="#667eea">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js')
+        .then(() => console.log('Service Worker Registered'));
+    }
+  </script>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      height: 100vh;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      transition: background 1s ease;
+    }
+
+    .container {
+      text-align: center;
+      padding: 30px;
+      max-width: 600px;
+      border-radius: 20px;
+      background: rgba(255,255,255,0.1);
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+      animation: fadeIn 1s ease;
+    }
+
+    #quote {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      min-height: 100px;
+      opacity: 0;
+      animation: fadeIn 1s ease forwards;
+    }
+
+    button {
+      margin: 5px;
+      padding: 10px 20px;
+      border: none;
+      background: rgba(255,255,255,0.2);
+      color: white;
+      font-size: 1rem;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    button:hover {
+      background: rgba(255,255,255,0.4);
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div id="quote">"Loading quote..."</div>
+    <button onclick="newQuote()">Next Quote</button>
+    <button onclick="copyQuote()">Copy</button>
+  </div>
+
+  <script>
+    const quotes = [
+      "Believe you can and you're halfway there.",
+      "Success is not final, failure is not fatal.",
+      "Dream big. Start small. Act now.",
+      "Do something today that your future self will thank you for.",
+      "It always seems impossible until it's done.",
+      "Your only limit is your mind.",
+      "Don’t watch the clock; do what it does. Keep going.",
+      "Push yourself, because no one else is going to do it for you."
+    ];
+
+    const colors = [
+      "#667eea", "#764ba2", "#ff9a9e", "#00c6ff", "#f77062", "#16a085", "#f39c12"
+    ];
+
+    function newQuote() {
+      const quote = quotes[Math.floor(Math.random() * quotes.length)];
+      const color = colors[Math.floor(Math.random() * colors.length)];
+
+      document.getElementById("quote").style.opacity = 0;
+      setTimeout(() => {
+        document.getElementById("quote").textContent = `"${quote}"`;
+        document.getElementById("quote").style.opacity = 1;
+      }, 300);
+
+      document.body.style.background = `linear-gradient(135deg, ${color}, #000000)`;
+    }
+
+    function copyQuote() {
+      const quoteText = document.getElementById("quote").textContent;
+      navigator.clipboard.writeText(quoteText).then(() => {
+        alert("Quote copied!");
+      });
+    }
+
+    newQuote(); // load first quote
+  </script>
+</body>
+</html>
